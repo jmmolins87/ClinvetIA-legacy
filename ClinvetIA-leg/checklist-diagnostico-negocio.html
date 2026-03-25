@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checklist de Diagnóstico de Negocio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: #e5e7eb;
+      padding: 30px;
+    }
+    .container {
+      max-width: 750px;
+      margin: auto;
+      background: #020617;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 0 30px rgba(0,0,0,.4);
+    }
+    h1 {
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+    .item {
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .warning {
+      color: #f87171;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      border: 2px solid transparent;
+      user-select: none;
+    }
+    .btn.red {
+      background: #450a0a;
+      color: #f87171;
+      border-color: #f87171;
+    }
+    .btn.green {
+      background: #052e16;
+      color: #4ade80;
+      border-color: #4ade80;
+    }
+    .btn.active {
+      box-shadow: 0 0 12px currentColor;
+      transform: scale(1.05);
+    }
+    .result {
+      margin-top: 25px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #7c2d12;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Checklist de diagnóstico</h1>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Cómo captan leads actualmente?</p>
+        <div class="warning">Sin sistema automatizado de captación</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Cuánto tardan en contactar a un lead nuevo?</p>
+        <div class="warning">Más de 1 hora = leads fríos</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Tienen seguimiento automatizado?</p>
+        <div class="warning">Sin seguimiento = leads perdidos</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Cómo confirman citas / ventas?</p>
+        <div class="warning">Sin confirmación = no-shows altos</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Ofrecen productos o servicios adicionales?</p>
+        <div class="warning">Sin upsells = dinero dejado en la mesa</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="item" data-status="no">
+      <div>
+        <p>¿Tienen programa de fidelización?</p>
+        <div class="warning">Sin fidelización = clientes que no vuelven</div>
+      </div>
+      <div class="buttons">
+        <div class="btn red active" onclick="setStatus(this, false)">✖</div>
+        <div class="btn green" onclick="setStatus(this, true)">✔</div>
+      </div>
+    </div>
+
+    <div class="result" onclick="showResult()">
+      Ver recomendaciones (<span id="count">6</span> problemas detectados)
+    </div>
+  </div>
+
+  <script>
+    function setStatus(el, ok) {
+      const item = el.closest('.item');
+      const buttons = item.querySelectorAll('.btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      item.dataset.status = ok ? 'yes' : 'no';
+      updateCount();
+    }
+
+    function updateCount() {
+      const items = document.querySelectorAll('.item');
+      let problems = 0;
+      items.forEach(i => {
+        if (i.dataset.status === 'no') problems++;
+      });
+      document.getElementById('count').textContent = problems;
+    }
+
+    function showResult() {
+      alert("Problemas detectados: " + document.getElementById('count').textContent);
+    }
+  </script>
+</body>
+</html>
